@@ -64,4 +64,8 @@ public class Order {
     public void setOrderDeliveredTime(String orderDeliveredTime) {
         this.orderDeliveredTime = orderDeliveredTime;
     }
+
+    public void setDriver(Driver assignedDriver) {
+        this.driver = assignedDriver;
+    }
 }

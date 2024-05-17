@@ -12,6 +12,7 @@ public class OrderManager implements Observable {
 
     public void createOrder(Order order) {
         orders.add(order);
+        System.out.println("Order created: " + order);
         notifyObservers(order);
     }
 
@@ -32,6 +33,7 @@ public class OrderManager implements Observable {
         }
     }
 }
+
 
 
 

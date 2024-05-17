@@ -51,12 +51,23 @@ public class Main {
         Order order = new Order(restaurant, customer, "No restrictions", restaurant.getMenu().getMeals(), null, "1st shift", null, null);
         orderManager.createOrder(order);
 
+        // Assign a driver and simulate order pickup and delivery
+        Driver assignedDriver = platform.getDrivers().get(0); // Assume the first driver is assigned
+        order.setDriver(assignedDriver);
+        order.setOrderPickupTime("12:00 PM");
+        System.out.println("Order picked up by: " + assignedDriver.getName() + " at " + order.getOrderPickupTime());
+
+        // Simulate delivery
+        order.setOrderDeliveredTime("12:30 PM");
+        System.out.println("Order delivered by: " + assignedDriver.getName() + " at " + order.getOrderDeliveredTime());
+
         // Print some outputs to see the interactions
         System.out.println("Total registered customers: " + platform.getCustomers().size());
         System.out.println("Total registered drivers: " + platform.getDrivers().size());
         System.out.println("Total registered restaurants: " + platform.getRestaurants().size());
     }
 }
+
 
 
 
