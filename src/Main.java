@@ -1,39 +1,55 @@
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         // Get the singleton instance of the platform
         CPPFoodDelivery platform = CPPFoodDelivery.getInstance();
 
+        // Create factories
+        UserFactory customerFactory = new CustomerFactory();
+        UserFactory driverFactory = new DriverFactory();
+        UserFactory restaurantFactory = new RestaurantFactory();
+
         // Create and register Restaurants
-        platform.registerUser(new Restaurant("Taco Bell", "123 Taco St", "LA County", "Mexican", "8AM-10PM", new Menu()));
-        platform.registerUser(new Restaurant("Thai Spice", "456 Pad Thai Ave", "Orange County", "Thai", "10AM-9PM", new Menu()));
-        platform.registerUser(new Restaurant("Pizza Place", "789 Pizza Rd", "San Bernardino County", "Italian", "11AM-11PM", new Menu()));
-        platform.registerUser(new Restaurant("Sushi Boat", "321 Sushi Blvd", "LA County", "Japanese", "9AM-6PM", new Menu()));
+        platform.registerUser(restaurantFactory.createUser("Taco Bell", "123 Taco St", "LA County"));
+        platform.registerUser(restaurantFactory.createUser("Thai Spice", "456 Pad Thai Ave", "Orange County"));
+        platform.registerUser(restaurantFactory.createUser("Pizza Place", "789 Pizza Rd", "San Bernardino County"));
+        platform.registerUser(restaurantFactory.createUser("Sushi Boat", "321 Sushi Blvd", "LA County"));
 
         // Create and register Drivers
-        platform.registerUser(new Driver("John Doe", "100 Main St", "LA County", "1st shift", "LA County"));
-        platform.registerUser(new Driver("Jane Smith", "200 Second St", "Orange County", "2nd shift", "Orange County"));
-        platform.registerUser(new Driver("Mike Brown", "300 Third St", "San Bernardino County", "3rd shift", "San Bernardino County"));
-        // (Add more drivers as needed)
+        platform.registerUser(driverFactory.createUser("John Doe", "100 Main St", "LA County"));
+        platform.registerUser(driverFactory.createUser("Jane Smith", "200 Second St", "Orange County"));
+        platform.registerUser(driverFactory.createUser("Mike Brown", "300 Third St", "San Bernardino County"));
+        platform.registerUser(driverFactory.createUser("Sarah Lee", "400 Fourth St", "LA County"));
+        platform.registerUser(driverFactory.createUser("Chris Johnson", "500 Fifth St", "Orange County"));
+        platform.registerUser(driverFactory.createUser("Emily Davis", "600 Sixth St", "San Bernardino County"));
+        platform.registerUser(driverFactory.createUser("David Wilson", "700 Seventh St", "LA County"));
+        platform.registerUser(driverFactory.createUser("Laura Martinez", "800 Eighth St", "Orange County"));
 
         // Create and register Customers
-        platform.registerUser(new Customer("Alice Johnson", "111 Fourth St", "LA County", "No restrictions"));
-        platform.registerUser(new Customer("Bob White", "222 Fifth St", "Orange County", "Vegan"));
-        // (Add more customers as needed)
+        platform.registerUser(customerFactory.createUser("Alice Johnson", "111 Fourth St", "LA County"));
+        platform.registerUser(customerFactory.createUser("Bob White", "222 Fifth St", "Orange County"));
+        platform.registerUser(customerFactory.createUser("Charlie Green", "333 Sixth St", "San Bernardino County"));
+        platform.registerUser(customerFactory.createUser("Daisy Brown", "444 Seventh St", "LA County"));
+        platform.registerUser(customerFactory.createUser("Evan Black", "555 Eighth St", "Orange County"));
+        platform.registerUser(customerFactory.createUser("Fiona Clark", "666 Ninth St", "San Bernardino County"));
+        platform.registerUser(customerFactory.createUser("George Harris", "777 Tenth St", "LA County"));
+        platform.registerUser(customerFactory.createUser("Hannah Scott", "888 Eleventh St", "Orange County"));
+        platform.registerUser(customerFactory.createUser("Ian Adams", "999 Twelfth St", "San Bernardino County"));
+        platform.registerUser(customerFactory.createUser("Julia Baker", "1010 Thirteenth St", "LA County"));
+
+        // Create an order manager and register drivers as observers
+        OrderManager orderManager = new OrderManager();
+        for (Driver driver : platform.getDrivers()) {
+            orderManager.addObserver(driver);
+        }
 
         // Simulate a customer ordering
         Customer customer = platform.getCustomers().get(0); // Getting the first customer
         Restaurant restaurant = platform.getRestaurants().get(0); // Getting the first restaurant
-        Order order = new Order(restaurant, customer, "No restrictions", restaurant.getMenu().getMeals(), null, "12:00 PM", "12:30 PM", "1:00 PM");
-        restaurant.getMenu().addMeal(new Meal("Burrito", "Delicious Mexican burrito", 500, 18.0, 50.0, 25.0));
+        Meal meal = new Meal("Burrito", "Delicious Mexican burrito", 500, 18.0, 50.0, 25.0);
+        restaurant.getMenu().addMeal(meal);
 
-        // Assuming Driver and Order Management are set up to handle this
-        Driver driver = platform.getDrivers().get(0); // Getting a driver
-        // Driver picks up order
-        System.out.println(driver.getName() + " is delivering the order from " + restaurant.getName() + " to " + customer.getName());
-        // Driver delivers the order
-        System.out.println(order + " delivered by " + driver.getName() + " at " + order.getOrderDeliveredTime());
+        Order order = new Order(restaurant, customer, "No restrictions", restaurant.getMenu().getMeals(), null, "1st shift", null, null);
+        orderManager.createOrder(order);
 
         // Print some outputs to see the interactions
         System.out.println("Total registered customers: " + platform.getCustomers().size());
@@ -41,3 +57,6 @@ public class Main {
         System.out.println("Total registered restaurants: " + platform.getRestaurants().size());
     }
 }
+
+
+

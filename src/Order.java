@@ -65,4 +65,3 @@ public class Order {
         this.orderDeliveredTime = orderDeliveredTime;
     }
 }
-

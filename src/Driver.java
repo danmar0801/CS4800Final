@@ -1,4 +1,4 @@
-public class Driver extends User {
+public class Driver extends User implements Observer {
     private String shift;
     private String operatingCounty;
 
@@ -6,6 +6,14 @@ public class Driver extends User {
         super(name, address, county);
         this.shift = shift;
         this.operatingCounty = operatingCounty;
+    }
+
+    @Override
+    public void update(Order order) {
+        if (order.getRestaurant().getCounty().equals(this.operatingCounty) &&
+                this.shift.equals(order.getOrderCreationTime())) { // Adjust the condition as needed
+            System.out.println(this.getName() + " is available to deliver the order.");
+        }
     }
 
     public String getShift() {
@@ -24,4 +32,5 @@ public class Driver extends User {
         this.operatingCounty = operatingCounty;
     }
 }
+
 
